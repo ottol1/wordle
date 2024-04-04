@@ -6,32 +6,21 @@
 #include <stdlib.h>
 #include <time.h>
 #include<string.h>
-
-void green(){
-  printf("\e[1;32m");
-}
-
-void yellow() {
-  printf("\033[1;33m");
-}
-void white(){
-   printf("\033[0m");
-}
+#include"wordle.h"
 
 
-
-   int main(){
-     
-     char l1, l2, l3, l4, l5;
+int main()
+{
      char guess1[7];
-     int x,tries=1,i=0;
+     int x,tries=1,i=0,status;
 
-// instructions to play
+// printing the instructions to play
      printf("How to play\n");
-     printf("Each of your guesse must be a 5 letter word\n");
+     printf("Each of your guesse must be a 5 letter word all lowercase\n");
      printf("The color of the tiles will change to show you how close your guess was\n");
      printf("green- letter is in the correct spot, yellow- in the word but wrong spot, white-is not in the word\n");
 
+// The following code opens our file with a list of 5 letter words and checks if the file opens correctly
      FILE* file = fopen("wordle.txt","r");
      if (file == NULL){
         printf("The file cannot be opened\n");
@@ -42,9 +31,7 @@ void white(){
      for (x=0;x<rand()%95;x++){
      fscanf(file,"%s",word);
      }
-  //   printf("%s\n", word); // just for testing, delete in final code
-     
- 
+     printf("%s\n", word); // just for testing, delete in final code
      
    while (tries < 7){
      white(guess1);
