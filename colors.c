@@ -1,3 +1,9 @@
+/***********************************
+* Wordle Project
+* Lauren Otto & Paytn Barnette
+* CS 125 Spring 2024
+* Resources: Professor Marriott
+***********************************/
 #include <stdio.h>
 //Function to change letters green
 void green(){
