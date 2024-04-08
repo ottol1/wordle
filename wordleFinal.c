@@ -1,6 +1,9 @@
-/********************
-* Wordle proj 2
-********************/
+/***********************************
+* Wordle Project
+* Lauren Otto & Paytn Barnette
+* CS 125 Spring 2024
+* Resources: Professor Marriott
+***********************************/
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -30,14 +33,15 @@ void giveFeedback(char word[5], char guess1[5], int feedback[5]){
         }
     }
 }
+
 // The following function prints the feedback from the giveFeedback function. So if the feedback is 1 it will print the letter in that spot green. If feeedback is 2 it prints green and if feedback is anything else it prints white. 
-void printFeedback(int colors[5],char guess1[5]){
+void printFeedback(int feedback[5],char guess1[5]){
    int i;
     for(i=0;i<5;i++){
-        if (colors[i]==0){
+        if (feedback[i]==0){
             printf("%c",guess1[i]);
         }
-        else if (colors[i]==1){
+        else if (feedback[i]==1){
             green();
             printf("%c",guess1[i]);
         }
@@ -53,7 +57,7 @@ int main(){
 
 // Initializing our variables
      char guess1[5];
-     int z[5] = {0,0,0,0,0};
+     int feedback[5] = {0,0,0,0,0};
      int x,tries=1,i=0,j = 0;
 
 // Printing the instructions to play to the screen
@@ -68,32 +72,44 @@ int main(){
         printf("The file cannot be opened\n");
         return 1;
      }
+     
 // This section of code randomly scans in a word from our list for the user to guess
      srand(time(NULL));
      char word[6];
      for (x=0;x<rand()%95;x++){
      fscanf(file,"%s",word);
      }
-     printf("%s\n", word); // just for testing, delete in final code
+     //printf("%s\n", word); // shows word just for testing, comment out to play game
      
  // In the game the user has 6 guesses. The following while loop keeps track of the tries and keeps looping till the user has guessed the word or run out of tries.
    while (tries < 7){
-     z[0] = 0;  // The following 5 lines resets the z array for feedback to all zeroes for each new guess.
-     z[1] = 0;
-     z[2]= 0;
-     z[3]=0;
-     z[4]=0;
+   
+     // The following 5 lines resets the feedback array to all zeroes for each new guess.
+     feedback[0] = 0;
+     feedback[1] = 0;
+     feedback[2]= 0;
+     feedback[3]=0;
+     feedback[4]=0;
      white(guess1);
      white(tries);
      printf("guess %d:",tries);
      scanf("%s", guess1);
      tries++; 
-// The following if statement checks to ensure the user guesses 5 letters. Guessing too many or too few gives an error and makes them give a valid guess for that try.
+     
+// The following if statement checks to ensure the user guesses 5 letters. Guessing too many or too few gives an error.
      if ((strlen(guess1)>5)||(strlen(guess1)<5)){ 
        printf("Error guess has too many or too few letters try again\n");
        tries=tries-1;
       continue;
      }
+     
+// The following if statement checks for uppercase letters.
+     if ((isupper(guess1[0]))||(isupper(guess1[1]))||(isupper(guess1[2]))||(isupper(guess1[3]))||(isupper(guess1[4]))){ 
+       printf("Error guess has uppercase letter\n");
+       tries=tries-1;
+       continue;
+     }
+     
 // The following if statement checks if the user guessed the right word. If the guess is correct they win and the game ends.
      if (strcmp(word,guess1)==0){
        green(guess1);
@@ -101,12 +117,14 @@ int main(){
        printf("YOU WON!!\n");
        return 5;
      }
-// The following two lines run our giveFeedback & printFeedback functions. So if the user guesses a valid word and it isn't correct each individual letter is chacked and feedback is  given.
-     giveFeedback(word,guess1,z);
-     printFeedback(z,guess1);
+     
+// The following two lines run our giveFeedback & printFeedback functions. So if the user guesses a valid word and it isn't correct each individual letter is checked and feedback is  given.
+     giveFeedback(word,guess1,feedback);
+     printFeedback(feedback,guess1);
    
      printf("\n");
    }
+   
 // The following if statement checks for the amount of guesses. So once the user has made 6 guesses without guessing the correct word it ends the game
    if (tries = 7){
      white();
